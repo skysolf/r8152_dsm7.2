@@ -16,19 +16,19 @@ jobs:
       uses: actions/checkout@v2
     - name: Run script
       run: |
-        mkdir -p /toolkit && \
-        apt-get install cifs-utils python3 python3-pip git -y && \
-        git clone https://github.com/SynologyOpenSource/pkgscripts-ng && \
+        sudo mkdir -p /toolkit && \
+        sudo apt-get install cifs-utils python3 python3-pip git -y && \
+        sudo git clone https://github.com/SynologyOpenSource/pkgscripts-ng && \
         cd /toolkit/pkgscripts-ng/ && \
-        git checkout DSM7.2 && \
-        ./EnvDeploy -v 7.2 -p geminilake && \
+        sudo git checkout DSM7.2 && \
+        sudo ./EnvDeploy -v 7.2 -p geminilake && \
         ./EnvDeploy -v 7.2 -p apollolake && \
         mkdir source && \
         cd source/ && \
-        git clone https://github.com/almir1904/r8152.git && \
+        sudo git clone https://github.com/almir1904/r8152.git && \
         cd /toolkit/pkgscripts-ng/ && \
-        ./PkgCreate.py -v 7.2 -p geminilake -c r8152 && \
-        ./PkgCreate.py -v 7.2 -p apollolake -c r8152
+        sudo ./PkgCreate.py -v 7.2 -p geminilake -c r8152 && \
+        sudo ./PkgCreate.py -v 7.2 -p apollolake -c r8152
     - name: Create Release
       uses: actions/create-release@v1
       with:

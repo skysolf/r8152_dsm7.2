@@ -4,19 +4,19 @@
 source /pkgscripts-ng/include/pkg_util.sh
 
 package="r8152"
-version="2.16.3-3"
+version="2.16.3-4"
 displayname="RTL8152/RTL8153 driver"
-maintainer="bb-qq"
+maintainer="almir1904"
 arch="$(pkg_get_platform)"
 install_type="package"
 thirdparty="yes"
 
 [ "$(caller)" != "0 NULL" ] && return 0
 
-if [ "${PRODUCT_VERSION}" = "7.0" ]; then
-    os_min_ver="7.0-40000"
+if [ "${PRODUCT_VERSION}" = "7.2" ]; then
+    os_min_ver="7.2-63133"
     RUN_AS="package"
-    INSTRUCTION=' [DSM7 note] If this is the first time you are installing this driver, special steps are required. See the readme for details.'
+    INSTRUCTION=' [DSM 7.2.x note] If this is the first time you are installing this driver, special steps are required. See the readme for details.'
 else
     RUN_AS="root"
 fi

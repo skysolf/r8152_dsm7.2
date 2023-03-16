@@ -17,7 +17,7 @@ jobs:
     - name: Run script
       run: |
         mkdir /home/runner/work/r8152/r8152/toolkit && \
-        apt-get install cifs-utils python3 python3-pip git -y && \
+        sudo apt-get install cifs-utils python3 python3-pip git -y && \
         git clone https://github.com/SynologyOpenSource/pkgscripts-ng && \
         cd /home/runner/work/r8152/r8152/toolkit/pkgscripts-ng/ && \
         git checkout DSM7.2 && \

@@ -1,0 +1,50 @@
+name: Run Toolkit Script and Create Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version'     
+        required: false
+        default: "2.16.3-4"
+        
+jobs:
+  run-script:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+    - name: Run script
+      run: |
+        mkdir -p /toolkit && \
+        apt-get install cifs-utils python3 python3-pip git -y && \
+        git clone https://github.com/SynologyOpenSource/pkgscripts-ng && \
+        cd /toolkit/pkgscripts-ng/ && \
+        git checkout DSM7.2 && \
+        ./EnvDeploy -v 7.2 -p geminilake && \
+        ./EnvDeploy -v 7.2 -p apollolake && \
+        mkdir source && \
+        cd source/ && \
+        git clone https://github.com/almir1904/r8152.git && \
+        cd /toolkit/pkgscripts-ng/ && \
+        ./PkgCreate.py -v 7.2 -p geminilake -c r8152 && \
+        ./PkgCreate.py -v 7.2 -p apollolake -c r8152
+    - name: Create Release
+      uses: actions/create-release@v1
+      with:
+        tag_name: ${{ github.event.inputs.rid }}
+        release_name: Release ${{ github.event.inputs.rid }}
+        body: |
+          This is the ${{ github.event.inputs.rid }} release of the r8152 package.
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Upload geminilake SPK File
+      uses: actions/upload-artifact@v2
+      with:
+        name: r8152 apollolake SPK
+        path: /toolkit/result_spk/r8152-${{ github.event.inputs.rid }}/r8152-geminilake-${{ github.event.inputs.rid }}.spk
+    - name: Upload SPK File
+      uses: actions/upload-artifact@v2
+      with:
+        name: r8152 SPK
+        path: /toolkit/result_spk/r8152-${{ github.event.inputs.rid }}/r8152-apollolake-${{ github.event.inputs.rid }}.spk

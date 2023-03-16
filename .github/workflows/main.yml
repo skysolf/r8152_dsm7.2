@@ -16,15 +16,17 @@ jobs:
       uses: actions/checkout@v2
     - name: Run script
       run: |
-        ls -lhg && mkdir /home/runner/work/r8152/r8152/toolkit && \
+        ls -lh && \
         sudo apt-get install cifs-utils python3 python3-pip git -y && \
-        git clone https://github.com/SynologyOpenSource/pkgscripts-ng && \
-        cd /home/runner/work/r8152/r8152/toolkit/pkgscripts-ng/ && \
+        mkdir -p /home/runner/work/r8152/toolkit/pkgscripts-ng &&\
+        cd /home/runner/work/r8152/toolkit/pkgscripts-ng
+        git clone https://github.com/SynologyOpenSource/pkgscripts-ng . && \
+        ls -lh && \
         git checkout DSM7.2 && \
         ./EnvDeploy -v 7.2 -p geminilake && \
         ./EnvDeploy -v 7.2 -p apollolake && \
-        mkdir source && \
-        cd source/ && \
+        mkdir -p /home/runner/work/r8152/toolkit/pkgscripts-ng/source && \
+        cd /home/runner/work/r8152/toolkit/pkgscripts-ng/source && \
         git clone https://github.com/almir1904/r8152.git && \
         cd /home/runner/work/r8152/r8152/toolkit/pkgscripts-ng/ && \
         ./PkgCreate.py -v 7.2 -p geminilake -c r8152 && \
@@ -42,11 +44,9 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: r8152 apollolake SPK
-        path: /home/runner/work/r8152/r8152/toolkit/result_spk/r8152-${{ github.event.inputs.rid }}/r8152-geminilake-${{ github.event.inputs.rid }}.spk
+        path: /home/runner/work/r8152/toolkit/pkgscripts-ng/source/result_spk/r8152-${{ github.event.inputs.rid }}/r8152-geminilake-${{ github.event.inputs.rid }}.spk
     - name: Upload SPK File
       uses: actions/upload-artifact@v2
       with:
         name: r8152 SPK
         path: /home/runner/work/r8152/r8152/toolkit/result_spk/r8152-${{ github.event.inputs.rid }}/r8152-apollolake-${{ github.event.inputs.rid }}.spk
-    env:
-      root: true

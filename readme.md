@@ -1,3 +1,65 @@
+# Patched for DSM 7.2 Support
+
+Thanks for [almir1904](https://github.com/almir1904) and [peterywong](https://github.com/peterywong)
+
+Only two platform drivers are listed here(ds920+-->geminilake,ds918+ -->apollolake), if your platform is not in the list, you can refer to the  [almir1904](https://github.com/almir1904) command to compile it yourself.
+
+If you don't know your platform,view this page [What kind of CPU does my Synology NAS have?](https://kb.synology.com/en-me/DSM/tutorial/What_kind_of_CPU_does_my_NAS_have)
+
+
+`mkdir -p /toolkit`
+
+`apt-get install cifs-utils python3 python3-pip git`
+
+`git clone https://github.com/SynologyOpenSource/pkgscripts-ng`
+
+`cd /toolkit/pkgscripts-ng/`
+
+`git checkout DSM7.2`
+
+`./EnvDeploy -v 7.2 -p geminilake (replace it with your CPU GEN)`
+
+`mkdir source`
+
+`cd source/`
+
+`git clone https://github.com/bb-qq/r8152.git`
+
+`cd /toolkit/pkgscripts-ng/`
+
+`./PkgCreate.py -v 7.2 -p geminilake -c r8152`
+
+
+Run sudo install -m 4755 -o root -D /var/packages/r8152/target/r8152/spk_su /opt/sbin/spk_su
+
+
+
+===============================================================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # DSM driver for realtek RTL8152/RTL8153/RTL8156 based USB Ethernet adapters
 
 This is a RTL8152/RTL8153/RTL8156(2.5Gbps or 1.0Gbps) driver package for Synology NASes.
